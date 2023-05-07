@@ -73,7 +73,5 @@ _[Ss]cripts
 *.nupkg
 *.ncrunchsolution
 *.dot[Cc]over
-.vs/DailyDine/FileContentIndex/3ee2f1b4-569f-4de8-a8ad-e2c90b09ec7d.vsidx
-.vs/DailyDine/FileContentIndex/read.lock
-.vs/DailyDine/FileContentIndex/774d56f7-3c2b-456d-8be8-5ea23781c326.vsidx
-.vs/DailyDine/FileContentIndex/974c7b3f-110e-4ebe-92dd-7d07d6122cae.vsidx
+.vs/
+.vs/*
