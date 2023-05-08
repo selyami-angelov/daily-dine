@@ -1,7 +1,9 @@
+using DailyDine.Core.Common;
+using DailyDine.Core.Contracts;
+using DailyDine.Core.Services;
 using DailyDine.Infrastructure.Data;
 using DailyDine.Infrastructure.Data.Entities;
 
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +17,9 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IRepository, Repository>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 
