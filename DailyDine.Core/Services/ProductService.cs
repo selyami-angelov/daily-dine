@@ -2,6 +2,7 @@
 using DailyDine.Core.Dtos;
 using DailyDine.Infrastructure.Data.Entities;
 
+using Microsoft.EntityFrameworkCore;
 
 namespace DailyDine.Core.Services
 {
@@ -23,9 +24,35 @@ namespace DailyDine.Core.Services
             repo = _repo;
         }
 
-        public Task Add(ProductDto productDto)
+        public async Task Add(ProductDto productDto)
         {
-            throw new NotImplementedException();
+            var product = new Product()
+            {
+                Name = productDto.Name,
+                CreatedBy = productDto.CreatedBy,
+                CreatedById = productDto.CreatedBy.Id,
+                EditedBy = productDto.EditedBy,
+                EditedById = productDto.EditedBy.Id,
+                CreatedDate = DateTime.Now,
+                EditedDate = DateTime.Now,
+                Description = productDto.Description,
+                Price = productDto.Price,
+                ProductImage = productDto.ProductImage
+            };
+
+            var category = await repo.All<Category>(c => c.Name == productDto.CategoryName).FirstOrDefaultAsync();
+
+            if (category == null)
+            {
+                category = new Category()
+                {
+                    Name = productDto.CategoryName
+                };
+                await repo.AddAsync(category);
+            }
+
+            category.Products.Add(product);
+            await repo.SaveChangesAsync();
         }
 
         public async Task Delete(Guid id)

@@ -64,7 +64,7 @@ namespace DailyDine.Controllers
                 CategoryName = model.CategoryName
             };
 
-            await categoryService.AddProduct(product);
+            await productService.Add(product);
             return RedirectToAction("index", "home");
 
         }
