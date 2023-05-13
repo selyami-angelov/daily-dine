@@ -17,15 +17,37 @@ namespace DailyDine.Core.Services
             repo = _repo;
         }
 
-        public async Task Add(CategoryDto categoryDto)
+        public async Task AddProduct(ProductDto productDto)
         {
-            var category = new Category()
+           var category =  await repo.All<Category>(c => c.Name == productDto.CategoryName).FirstOrDefaultAsync();
+
+            if(category == null)
             {
-               Name = categoryDto.Name
+                category = new Category()
+                {
+                    Name = productDto.CategoryName
+                };
+                await repo.AddAsync(category);
+            }
+
+            var product = new Product()
+            {
+                Name = productDto.Name,
+                CreatedBy = productDto.CreatedBy,
+                CreatedById = productDto.CreatedBy.Id,
+                EditedBy = productDto.EditedBy,
+                EditedById = productDto.EditedBy.Id,
+                CreatedDate = DateTime.Now ,
+                EditedDate = DateTime.Now,
+                Description = productDto.Description,
+                Price = productDto.Price,
+                ProductImage = productDto.ProductImage
             };
 
-            await repo.AddAsync(category);
+
+            category.Products.Add(product);
             await repo.SaveChangesAsync();
+
         }
 
         public Task Delete(int id)
@@ -36,40 +58,6 @@ namespace DailyDine.Core.Services
         public Task<IEnumerable<CategoryDto>> GetAll()
         {
             throw new NotImplementedException();
-        }
-
-        public async Task<CategoryDto> GetById(int id)
-        {
-            var category = await repo.GetByIdAsync<Category>(id);
-
-            if (category == null)
-            {
-                return null;
-            }
-
-
-            return new CategoryDto()
-            {
-                Id = category.Id,
-                Name = category.Name,
-            };
-        }
-
-        public async Task<CategoryDto> GetByName(string name)
-        {
-            var category = await repo.All<Category>(c => c.Name == name).ToListAsync();
-
-            if (!category.Any())
-            {
-                return null;
-            }
-
-
-            return new CategoryDto()
-            {
-                Id = category[0].Id,
-                Name = category[0].Name,
-            };
         }
     }
 }

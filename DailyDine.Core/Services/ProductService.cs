@@ -23,29 +23,9 @@ namespace DailyDine.Core.Services
             repo = _repo;
         }
 
-        /// <summary>
-        /// Add new product
-        /// </summary>
-        /// <param name="productDto">Product model</param>
-        /// <returns></returns>
-        public async Task Add(ProductDto productDto)
+        public Task Add(ProductDto productDto)
         {
-            var product = new Product()
-            {
-                Name = productDto.Name,
-                Description = productDto.Description,
-                Price = productDto.Price,
-                CategoryId = productDto.CategoryId,
-                CreatedById = productDto.CreatedById,
-                CreatedDate = productDto.CreatedDate,
-                EditedById = productDto.EditedById,
-                EditedDate = productDto.EditedDate,
-                ProductImage = productDto.ProductImage
-
-            };
-
-            await repo.AddAsync(product);
-            await repo.SaveChangesAsync();
+            throw new NotImplementedException();
         }
 
         public async Task Delete(Guid id)

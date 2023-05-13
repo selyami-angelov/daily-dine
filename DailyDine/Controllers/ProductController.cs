@@ -1,15 +1,11 @@
-﻿using DailyDine.Core;
-using DailyDine.Core.Contracts;
+﻿using DailyDine.Core.Contracts;
 using DailyDine.Core.Dtos;
 using DailyDine.Core.Models;
-using DailyDine.Infrastructure.Data.Entities;
+using DailyDine.Infrastructure.Data;
 
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using System.Security.Claims;
-
-using static DailyDine.Core.Constants;
 
 namespace DailyDine.Controllers
 {
@@ -17,11 +13,14 @@ namespace DailyDine.Controllers
     {
         private readonly IProductService productService;
         private readonly ICategoryService categoryService;
+        private readonly ApplicationDbContext dbContext;
 
-        public ProductController(IProductService _productService, ICategoryService _categoryService)
+
+        public ProductController(IProductService _productService, ICategoryService _categoryService, ApplicationDbContext _dbContext)
         {
             productService = _productService;
             categoryService = _categoryService;
+            dbContext = _dbContext;
 
         }
 
@@ -39,25 +38,14 @@ namespace DailyDine.Controllers
 
         public async Task<IActionResult> Create(CreateProductViewModel model)
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return View(model);
-            //}
-
-            var category = await categoryService.GetByName(model.CategoryName);
-
-
-            if (category == null)
+            if (!ModelState.IsValid)
             {
-                var newCategory = new CategoryDto()
-                {
-                    Name = model.CategoryName,
-                };
-
-                await categoryService.Add(newCategory);
+                return View(model);
             }
 
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = dbContext.Users.FirstOrDefault(u => u.Id == userId);
+
 
             var image = Array.Empty<byte>();
             using var stream = new MemoryStream();
@@ -70,17 +58,14 @@ namespace DailyDine.Controllers
                 Name = model.Name,
                 Description = model.Description,
                 Price = model.Price,
-                CategoryId = category.Id,
-                CreatedById = userId,
-                EditedById = userId,
-                CreatedDate = new DateTime(),
-                EditedDate = new DateTime(),
-                ProductImage = image
+                ProductImage = image,
+                CreatedBy = user,
+                EditedBy = user,
+                CategoryName = model.CategoryName
             };
 
-            await productService.Add(product);
-
-            return View();
+            await categoryService.AddProduct(product);
+            return RedirectToAction("index", "home");
 
         }
 
