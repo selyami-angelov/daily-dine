@@ -1,5 +1,4 @@
-﻿using DailyDine.Core.Models;
-
+﻿using DailyDine.Core.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;

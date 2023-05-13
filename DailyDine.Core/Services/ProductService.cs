@@ -1,7 +1,7 @@
 ﻿using DailyDine.Core.Contracts;
-using DailyDine.Core.Models;
+using DailyDine.Core.Dtos;
+using DailyDine.Infrastructure.Data.Entities;
 
-using Microsoft.Extensions.Configuration;
 
 namespace DailyDine.Core.Services
 {
@@ -10,7 +10,6 @@ namespace DailyDine.Core.Services
     /// </summary>
     public class ProductService : IProductService
     {
-        private readonly IConfiguration config;
 
         private readonly IRepository repo;
 
@@ -19,10 +18,8 @@ namespace DailyDine.Core.Services
         /// </summary>
         /// <param name="_config">Application configuration</param>
         public ProductService(
-            IConfiguration _config,
             IRepository _repo)
         {
-            config = _config;
             repo = _repo;
         }
 
@@ -33,15 +30,22 @@ namespace DailyDine.Core.Services
         /// <returns></returns>
         public async Task Add(ProductDto productDto)
         {
-            //var product = new Product()
-            //{
-            //    Name = productDto.Name,
-            //    Price = productDto.Price,
-            //    Quantity = productDto.Quantity
-            //};
+            var product = new Product()
+            {
+                Name = productDto.Name,
+                Description = productDto.Description,
+                Price = productDto.Price,
+                CategoryId = productDto.CategoryId,
+                CreatedById = productDto.CreatedById,
+                CreatedDate = productDto.CreatedDate,
+                EditedById = productDto.EditedById,
+                EditedDate = productDto.EditedDate,
+                ProductImage = productDto.ProductImage,
 
-            //await repo.AddAsync(product);
-            //await repo.SaveChangesAsync();
+            };
+
+            await repo.AddAsync(product);
+            await repo.SaveChangesAsync();
         }
 
         public async Task Delete(Guid id)
