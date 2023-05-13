@@ -45,7 +45,6 @@ namespace DailyDine.Infrastructure.Data
                 .WithMany()
                 .HasForeignKey(p => p.EditedById)
                 .OnDelete(DeleteBehavior.Restrict);
-
         }
 
         public DbSet<Product> Products { get; set; }
@@ -53,7 +52,5 @@ namespace DailyDine.Infrastructure.Data
         public DbSet<LunchSubscription> LunchSubscription { get; set; }
         public DbSet<Menu> Menu { get; set; }
         public DbSet<MenuSaved> MenuSaved { get; set; }
-
-
     }
 }

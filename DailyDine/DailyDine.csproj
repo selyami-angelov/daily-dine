@@ -23,4 +23,9 @@
     <ProjectReference Include="..\DailyDine.Core\DailyDine.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Menu\" />
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
 </Project>

@@ -1,6 +1,3 @@
-using DailyDine.Core.Common;
-using DailyDine.Core.Contracts;
-using DailyDine.Core.Services;
 using DailyDine.Infrastructure.Data;
 using DailyDine.Infrastructure.Data.Entities;
 
@@ -25,9 +22,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 })
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
-
-builder.Services.AddScoped<IRepository, Repository>();
-builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddApplicationServices();
 
 var app = builder.Build();
 

@@ -40,7 +40,7 @@ namespace DailyDine.Core.Services
                 CreatedDate = productDto.CreatedDate,
                 EditedById = productDto.EditedById,
                 EditedDate = productDto.EditedDate,
-                ProductImage = productDto.ProductImage,
+                ProductImage = productDto.ProductImage
 
             };
 
