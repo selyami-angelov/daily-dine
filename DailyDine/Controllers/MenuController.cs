@@ -22,10 +22,21 @@ namespace DailyDine.Controllers
             userService = _userService;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
-            return View();
+
+            var menuForToday = await menuService.GetMenuForDate(DateTime.Now);
+            var menu = new MenuModel()
+            {
+                Categories = menuForToday.Products.Select(p => p.CategoryName).Distinct().ToList(),
+                Date = menuForToday.Date,
+                Products = menuForToday.Products
+            };
+
+            return View(menu);
         }
+
 
         public async Task<IActionResult> Create()
         {

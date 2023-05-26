@@ -1,6 +1,5 @@
 ﻿using DailyDine.Core.Contracts;
 using DailyDine.Core.Dtos;
-using DailyDine.Infrastructure.Data;
 using DailyDine.Models.Product;
 
 using Microsoft.AspNetCore.Mvc;

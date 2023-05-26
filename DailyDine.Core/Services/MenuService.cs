@@ -17,9 +17,8 @@ namespace DailyDine.Core.Services
 
         public async Task<MenuDto> GetMenuForDate(DateTime date)
         {
-            string format = "dd.MM.yyyy";
-            string ddMMyy = date.ToString(format);
-            var menu = await repository.FirstOrDefaultAsync<Menu>(m => m.Date.ToString(format) == ddMMyy);
+            
+            var menu = await repository.FirstOrDefaultAsync<Menu, ICollection<Product>>(m => m.Date.Year == date.Year && m.Date.Month == date.Month && m.Date.Day == date.Day, m => m.Products);
             return new MenuDto()
             {
                 Id = menu.Id,
