@@ -3,6 +3,7 @@ using DailyDine.Infrastructure.Data;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 using System.Linq.Expressions;
 
@@ -187,6 +188,11 @@ namespace DailyDine.Core.Common
         public async Task<T> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> search) where T : class
         {
             return await this.DbSet<T>().FirstOrDefaultAsync(search);
+        }
+
+        public async Task<T> FirstOrDefaultAsync<T, IProperty>(Expression<Func<T, bool>> search, Expression<Func<T, IProperty>> include) where T : class
+        {
+            return await this.DbSet<T>().Include(include).FirstOrDefaultAsync(search);
         }
     }
 }

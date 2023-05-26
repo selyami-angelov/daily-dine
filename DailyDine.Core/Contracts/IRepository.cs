@@ -1,4 +1,6 @@
-﻿using System.Linq.Expressions;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+
+using System.Linq.Expressions;
 
 namespace DailyDine.Core.Contracts
 {
@@ -36,6 +38,8 @@ namespace DailyDine.Core.Contracts
         /// </summary>
         /// <returns>Queryable expression tree</returns>
         Task<T> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> search) where T : class;
+
+        Task<T> FirstOrDefaultAsync<T, IProperty>(Expression<Func<T, bool>> search, Expression<Func<T, IProperty>> include) where T : class;
 
         /// <summary>
         /// Gets specific record from database by primary key
