@@ -12,16 +12,16 @@ namespace DailyDine.Core.Services
     public class ProductService : IProductService
     {
 
-        private readonly IRepository repo;
+        private readonly IRepository repository;
 
         /// <summary>
         /// IoC 
         /// </summary>
         /// <param name="_config">Application configuration</param>
         public ProductService(
-            IRepository _repo)
+            IRepository _repository)
         {
-            repo = _repo;
+            repository = _repository;
         }
 
         public async Task Add(ProductDto productDto)
@@ -40,7 +40,7 @@ namespace DailyDine.Core.Services
                 ProductImage = productDto.ProductImage
             };
 
-            var category = await repo.All<Category>(c => c.Name == productDto.CategoryName).FirstOrDefaultAsync();
+            var category = await repository.All<Category>(c => c.Name == productDto.CategoryName).FirstOrDefaultAsync();
 
             if (category == null)
             {
@@ -48,11 +48,11 @@ namespace DailyDine.Core.Services
                 {
                     Name = productDto.CategoryName
                 };
-                await repo.AddAsync(category);
+                await repository.AddAsync(category);
             }
 
             category.Products.Add(product);
-            await repo.SaveChangesAsync();
+            await repository.SaveChangesAsync();
         }
 
         public async Task Delete(Guid id)
@@ -72,19 +72,19 @@ namespace DailyDine.Core.Services
         /// Gets all products
         /// </summary>
         /// <returns>List of products</returns>
-        public async Task<IEnumerable<ProductDto>> GetAll()
+        public async Task<ICollection<ProductDto>> GetAll()
         {
-            //return await repo.AllReadonly<Product>()
-            //    .Where(p => p.IsActive)
-            //    .Select(p => new ProductDto()
-            //    {
-            //        Id = p.Id,
-            //        Name = p.Name,
-            //        Price = p.Price,
-            //        Quantity = p.Quantity
-            //    }).ToListAsync();
-
-            return Array.Empty<ProductDto>();
+            return await repository.AllReadonly<Product>()
+                .Select(p => new ProductDto()
+                {
+                    CategoryName=p.Category.Name,
+                    Description=p.Description,
+                    Price = p.Price,
+                    Name = p.Name,
+                    ProductImage=p.ProductImage,
+                    Id = p.Id
+                }).ToListAsync();
         }
+
     }
 }

@@ -8,9 +8,6 @@ namespace DailyDine.Core.Contracts
 
         Task<IEnumerable<CategoryDto>> GetAll();
 
-
-        Task AddProduct(ProductDto product);
-
         Task Delete(int id);
     }
 }

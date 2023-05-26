@@ -1,0 +1,47 @@
+﻿@using DailyDine.Models.Menu;
+@model MenuModel;
+
+@{
+    ViewData["Title"] = "Our Menu";
+}
+
+<div class="container">
+    <div class="heading_container heading_center">
+        <h2>
+            Our Menu
+        </h2>
+    </div>
+
+    <ul class="filter-product-category">
+        <li class="active" data-filter="*">All</li>
+        <li data-filter=".burger">Burger</li>
+        <li data-filter=".pizza">Pizza</li>
+        <li data-filter=".pasta">Pasta</li>
+        <li data-filter=".fries">Fries</li>
+    </ul>
+    <div class="products">
+        <div class="row grid">
+            @{
+                foreach (var product in Model.Products)
+                {
+                    <div class="col-sm-6 col-lg-4">
+                        <div class="product-card">
+                            <div class="img-wrapper">
+                                <img src="" alt="product-img" />
+                            </div>
+                            <div class="product-card-body">
+                                <h5>@product.Name</h5>
+                                <p>@product.Description</p>
+                            </div>
+                            <div class="product-card-footer">
+                                <label class="price">$@product.Price</label>
+                                <div class="order-cart">cart</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+

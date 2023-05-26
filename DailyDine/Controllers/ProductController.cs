@@ -1,7 +1,7 @@
 ﻿using DailyDine.Core.Contracts;
 using DailyDine.Core.Dtos;
-using DailyDine.Core.Models;
 using DailyDine.Infrastructure.Data;
+using DailyDine.Models.Product;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,7 +36,7 @@ namespace DailyDine.Controllers
 
         [HttpPost]
 
-        public async Task<IActionResult> Create(CreateProductViewModel model)
+        public async Task<IActionResult> Create(CreateProductModel model)
         {
             if (!ModelState.IsValid)
             {

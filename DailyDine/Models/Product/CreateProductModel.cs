@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.ComponentModel.DataAnnotations;
 
-using System.ComponentModel.DataAnnotations;
-
-
-namespace DailyDine.Core.Models
+namespace DailyDine.Models.Product
 {
-    public class CreateProductViewModel
+    public class CreateProductModel
     {
 
         [Required]
@@ -24,6 +21,5 @@ namespace DailyDine.Core.Models
 
         [Required]
         public IFormFile ProductImage { get; set; }
-
     }
 }

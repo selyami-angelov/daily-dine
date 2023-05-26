@@ -183,5 +183,10 @@ namespace DailyDine.Core.Common
             var entities = All<T>(deleteWhereClause);
             DeleteRange(entities);
         }
+
+        public async Task<T> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> search) where T : class
+        {
+            return await this.DbSet<T>().FirstOrDefaultAsync(search);
+        }
     }
 }

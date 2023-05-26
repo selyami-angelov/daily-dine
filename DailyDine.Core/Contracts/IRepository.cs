@@ -32,6 +32,12 @@ namespace DailyDine.Core.Contracts
         IQueryable<T> AllReadonly<T>(Expression<Func<T, bool>> search) where T : class;
 
         /// <summary>
+        /// All records in a table
+        /// </summary>
+        /// <returns>Queryable expression tree</returns>
+        Task<T> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> search) where T : class;
+
+        /// <summary>
         /// Gets specific record from database by primary key
         /// </summary>
         /// <param name="id">record identificator</param>

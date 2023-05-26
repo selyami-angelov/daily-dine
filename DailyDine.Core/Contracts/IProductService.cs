@@ -1,9 +1,4 @@
 ﻿using DailyDine.Core.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DailyDine.Core.Contracts
 {
@@ -16,7 +11,7 @@ namespace DailyDine.Core.Contracts
         /// Gets all products
         /// </summary>
         /// <returns>List of products</returns>
-        Task<IEnumerable<ProductDto>> GetAll();
+        Task<ICollection<ProductDto>> GetAll();
 
         /// <summary>
         /// Add new product
@@ -25,6 +20,11 @@ namespace DailyDine.Core.Contracts
         /// <returns></returns>
         Task Add(ProductDto productDto);
 
+        /// <summary>
+        /// Delete a product by its ID
+        /// </summary>
+        /// <param name="id">Product ID</param>
+        /// <returns>Task</returns>
         Task Delete(Guid id);
     }
 }
