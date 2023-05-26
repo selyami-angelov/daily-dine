@@ -59,12 +59,5 @@ namespace DailyDine.Core.Services
             await repository.SaveChangesAsync();
         }
 
-
-        //public async Task<IEnumerable<ProductDto>> GetMenuForDate(DateTime date)
-        //{
-        //    var weekDay = date.ToString("dddd");
-        //    var products = await repository.All<Menu>
-        //    throw new NotImplementedException();
-        //}
     }
 }

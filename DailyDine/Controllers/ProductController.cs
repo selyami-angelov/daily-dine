@@ -13,14 +13,14 @@ namespace DailyDine.Controllers
     {
         private readonly IProductService productService;
         private readonly ICategoryService categoryService;
-        private readonly ApplicationDbContext dbContext;
+        private readonly IUserService userService;
 
 
-        public ProductController(IProductService _productService, ICategoryService _categoryService, ApplicationDbContext _dbContext)
+        public ProductController(IProductService _productService, ICategoryService _categoryService, IUserService _userService)
         {
             productService = _productService;
             categoryService = _categoryService;
-            dbContext = _dbContext;
+            userService = _userService;
 
         }
 
@@ -44,7 +44,7 @@ namespace DailyDine.Controllers
             }
 
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = dbContext.Users.FirstOrDefault(u => u.Id == userId);
+            var user =  await userService.GetUser(userId);
 
 
             var image = Array.Empty<byte>();
