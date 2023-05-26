@@ -12,6 +12,8 @@ namespace DailyDine.Core.Contracts
     {
         Task<MenuDto> GetMenuForDate(DateTime date);
 
+        Task<MenuDto> GetMenuById(int menuId);
+
         Task CreateMenuForDate(MenuDto menuDto, List<int> productIds);
     }
 }

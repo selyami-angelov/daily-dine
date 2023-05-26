@@ -83,5 +83,40 @@ namespace DailyDine.Controllers
 
             return RedirectToAction(nameof(Create));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int menuId)
+        {
+            var menu = await menuService.GetMenuById(2);
+            var products = await productService.GetAll();
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await userService.GetUser(userId);
+            List<bool> selectedProducts = new List<bool>();
+
+            foreach (var product in products)
+            {
+                if (menu.Products.FirstOrDefault(p => p.Id == product.Id) != null)
+                {
+                     selectedProducts.Add(true);
+                }
+                else
+                {
+                    selectedProducts.Add(false);
+                }
+            }
+
+      
+
+            var model = new CreateMenuModel()
+            {
+                CreatedBy = user,
+                Date = menu.Date,
+                Products = products.ToList(),
+                Selected = selectedProducts
+            };
+
+
+            return View(model);
+        }
     }
 }
