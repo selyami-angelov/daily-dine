@@ -22,7 +22,7 @@ namespace DailyDine.Controllers
         public async Task<IActionResult> Menu()
         {
             var today = DateTime.Now;
-            var menu = menuService.GetMenuForDate(today);
+            var menu = menuService.GetMenuByDate(today);
 
             return View();
         }
@@ -30,7 +30,7 @@ namespace DailyDine.Controllers
         public async Task<IActionResult> Create()
         {
             var today = DateTime.Now;
-            var menu = menuService.GetMenuForDate(today);
+            var menu = menuService.GetMenuByDate(today);
 
             return View();
         }

@@ -10,10 +10,11 @@ namespace DailyDine.Core.Contracts
 {
     public interface IMenuService
     {
-        Task<MenuDto> GetMenuForDate(DateTime date);
+        Task<MenuDto> GetMenuByDate(DateTime date);
 
         Task<MenuDto> GetMenuById(int menuId);
 
-        Task CreateMenuForDate(MenuDto menuDto, List<int> productIds);
+        Task CreateMenu(MenuDto menuDto, List<int> productIds);
+        Task EditMenu(int menuId, List<int> productIds);
     }
 }

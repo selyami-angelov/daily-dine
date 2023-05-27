@@ -15,7 +15,7 @@ namespace DailyDine.Core.Services
             repository = _repository;
         }
 
-        public async Task<MenuDto> GetMenuForDate(DateTime date)
+        public async Task<MenuDto> GetMenuByDate(DateTime date)
         {
             
             var menu = await repository.FirstOrDefaultAsync<Menu, ICollection<Product>>(m => m.Date.Year == date.Year && m.Date.Month == date.Month && m.Date.Day == date.Day, m => m.Products);
@@ -61,7 +61,7 @@ namespace DailyDine.Core.Services
             };
         }
 
-        public async Task CreateMenuForDate(MenuDto menuDto, List<int> productIds)
+        public async Task CreateMenu(MenuDto menuDto, List<int> productIds)
         {
             var products =  await repository.All<Product>(product => productIds.Contains(product.Id)).ToListAsync();
             var menu = new Menu()
@@ -80,5 +80,14 @@ namespace DailyDine.Core.Services
             await repository.SaveChangesAsync();
         }
 
+        public async Task EditMenu(int menuId, List<int> productIds)
+        {
+            var menu = await repository.FirstOrDefaultAsync<Menu, ICollection<Product>>(m=> m.Id == menuId, m => m.Products);
+            var products = await repository.All<Product>(product => productIds.Contains(product.Id)).ToListAsync();
+
+            menu.Products.Clear();
+            menu.Products = products;
+            await repository.SaveChangesAsync();
+        }
     }
 }

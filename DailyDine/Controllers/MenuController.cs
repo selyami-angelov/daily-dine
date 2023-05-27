@@ -26,7 +26,7 @@ namespace DailyDine.Controllers
         public async Task<IActionResult> Index()
         {
 
-            var menuForToday = await menuService.GetMenuForDate(DateTime.Now);
+            var menuForToday = await menuService.GetMenuByDate(DateTime.Now);
             var menu = new MenuModel()
             {
                 Categories = menuForToday.Products.Select(p => p.CategoryName).Distinct().ToList(),
@@ -79,7 +79,7 @@ namespace DailyDine.Controllers
 
             };
 
-            await menuService.CreateMenuForDate(menu, selectedProductIds);
+            await menuService.CreateMenu(menu, selectedProductIds);
 
             return RedirectToAction(nameof(Create));
         }
@@ -87,10 +87,13 @@ namespace DailyDine.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int menuId)
         {
-            var menu = await menuService.GetMenuById(2);
+            if (menuId == 0)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var menu = await menuService.GetMenuById(menuId);
             var products = await productService.GetAll();
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = await userService.GetUser(userId);
             List<bool> selectedProducts = new List<bool>();
 
             foreach (var product in products)
@@ -109,7 +112,6 @@ namespace DailyDine.Controllers
 
             var model = new CreateMenuModel()
             {
-                CreatedBy = user,
                 Date = menu.Date,
                 Products = products.ToList(),
                 Selected = selectedProducts
@@ -117,6 +119,39 @@ namespace DailyDine.Controllers
 
 
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(CreateMenuModel model, int menuId)
+        {
+
+            if (menuId == 0)
+            {
+                return View(model);
+            }
+
+            List<int> selectedProductIds = new List<int>();
+
+            for (int i = 0; i < model.Products.Count; i++)
+            {
+                if (model.Selected[i])
+                {
+                    selectedProductIds.Add(model.Products[i].Id);
+                }
+            }
+
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await userService.GetUser(userId);
+            var menu = new MenuDto()
+            {
+                EditedBy = user,
+                EditedDate = DateTime.Now
+
+            };
+
+            await menuService.EditMenu(menuId, selectedProductIds);
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
