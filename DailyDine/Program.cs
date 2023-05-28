@@ -1,3 +1,4 @@
+using DailyDine.Core.Common;
 using DailyDine.Infrastructure.Data;
 using DailyDine.Infrastructure.Data.Entities;
 
@@ -9,6 +10,14 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+
+// Create a scope to resolve the DbContext and seed the products
+using (var serviceScope = builder.Services.BuildServiceProvider().CreateScope())
+{
+    var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    DbSeeder.SeedProducts(dbContext);
+}
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>

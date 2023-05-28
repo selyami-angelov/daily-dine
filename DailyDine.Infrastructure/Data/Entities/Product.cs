@@ -11,7 +11,7 @@ namespace DailyDine.Infrastructure.Data.Entities
         public int Id { get; set; }
 
         [Required]
-        [StringLength(20, MinimumLength = 3)]
+        [StringLength(40, MinimumLength = 3)]
         public string Name { get; set; } = null!;
 
         [Required]
