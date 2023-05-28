@@ -13,6 +13,10 @@ namespace DailyDine.Core.Contracts
         /// <returns>List of products</returns>
         Task<ICollection<ProductDto>> GetAll();
 
+        Task<ProductDto> GetById(int id);
+
+        Task<ProductDto> GetByIdIncludingCategory(int id);
+
         /// <summary>
         /// Add new product
         /// </summary>
@@ -20,11 +24,13 @@ namespace DailyDine.Core.Contracts
         /// <returns></returns>
         Task Add(ProductDto productDto);
 
+        Task Edit(ProductDto productDto, int productId);
+
         /// <summary>
         /// Delete a product by its ID
         /// </summary>
         /// <param name="id">Product ID</param>
         /// <returns>Task</returns>
-        Task Delete(Guid id);
+        Task Delete(int id);
     }
 }

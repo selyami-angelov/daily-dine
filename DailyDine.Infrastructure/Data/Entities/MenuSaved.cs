@@ -13,23 +13,8 @@ namespace DailyDine.Infrastructure.Data.Entities
         public int MenuId { get; set; } 
 
         public Menu Menu { get; set; } = new Menu();
+
+        [Required]
+        public bool IsDeleted { get; set; } = false;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

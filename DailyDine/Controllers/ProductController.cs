@@ -43,7 +43,7 @@ namespace DailyDine.Controllers
             }
 
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user =  await userService.GetUser(userId);
+            var user = await userService.GetUser(userId);
 
 
             var image = Array.Empty<byte>();
@@ -64,6 +64,70 @@ namespace DailyDine.Controllers
             };
 
             await productService.Add(product);
+            return RedirectToAction("index", "home");
+
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int productId)
+        {
+            var ptoduct = await productService.GetByIdIncludingCategory(productId);
+
+            var editProductModel = new EditProductModel()
+            {
+                Description = ptoduct.Description,
+                Price = ptoduct.Price,
+                CategoryName = ptoduct.CategoryName,
+                Name = ptoduct.Name
+            };
+
+            return View(editProductModel);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditProductModel model, int productId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await userService.GetUser(userId);
+
+
+            var image = Array.Empty<byte>();
+            if (model.ProductImage != null)
+            {
+                using var stream = new MemoryStream();
+                await model.ProductImage.CopyToAsync(stream);
+                image = stream.ToArray();
+            }
+
+            var product = new ProductDto()
+            {
+                Name = model.Name,
+                Description = model.Description,
+                Price = model.Price,
+                ProductImage = image,
+                EditedBy = user,
+                CategoryName = model.CategoryName,
+                EditedDate = DateTime.Now
+                
+            };
+
+            await productService.Edit(product, productId);
+            return RedirectToAction("index", "home");
+            
+        }
+
+        [Route("product/delete")]
+        public async Task<IActionResult> Delete(int id)
+        {
+
+            await productService.Delete(id);
             return RedirectToAction("index", "home");
 
         }

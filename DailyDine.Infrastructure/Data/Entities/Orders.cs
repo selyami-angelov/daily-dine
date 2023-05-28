@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DailyDine.Infrastructure.Data.Entities
 {
-    public class LunchSubscription
+    public class Orders
     {
         [Key]
         public int Id { get; set; }
@@ -12,7 +12,7 @@ namespace DailyDine.Infrastructure.Data.Entities
         public DateTime Date { get; set; }
 
         [Required]
-        public string SubscriptionId { get; set; } = null!;
+        public string OrderId { get; set; } = null!;
 
         [Required]
         [ForeignKey(nameof(User))]
@@ -26,5 +26,8 @@ namespace DailyDine.Infrastructure.Data.Entities
         public ApplicationUser User { get; set; } = new ApplicationUser();
 
         public ICollection<Product> Products { get; set; } = new List<Product>();
+
+        [Required]
+        public bool IsDeleted { get; set; } = false;
     }
 }

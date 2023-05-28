@@ -17,7 +17,7 @@ namespace DailyDine.Core.Services
 
         public async Task<MenuDto> GetMenuByDate(DateTime date)
         {
-            
+
             var menu = await repository.FirstOrDefaultAsync<Menu, ICollection<Product>>(m => m.Date.Year == date.Year && m.Date.Month == date.Month && m.Date.Day == date.Day, m => m.Products);
             return new MenuDto()
             {
@@ -48,7 +48,9 @@ namespace DailyDine.Core.Services
                 CreatedDate = menu.CreatedDate,
                 EditedBy = menu.EditedBy,
                 EditedDate = menu.EditedDate,
-                Products = menu.Products.Select(p => new ProductDto()
+                Products = menu.Products
+                .Where(p => !p.IsDeleted)
+                .Select(p => new ProductDto()
                 {
                     Id = p.Id,
                     CategoryName = p.Category.Name,
@@ -63,7 +65,9 @@ namespace DailyDine.Core.Services
 
         public async Task CreateMenu(MenuDto menuDto, List<int> productIds)
         {
-            var products =  await repository.All<Product>(product => productIds.Contains(product.Id)).ToListAsync();
+            var products = await repository.All<Product>(product => productIds.Contains(product.Id))
+                .Where(p => !p.IsDeleted)
+                .ToListAsync();
             var menu = new Menu()
             {
                 Id = menuDto.Id,
@@ -82,8 +86,11 @@ namespace DailyDine.Core.Services
 
         public async Task EditMenu(int menuId, List<int> productIds)
         {
-            var menu = await repository.FirstOrDefaultAsync<Menu, ICollection<Product>>(m=> m.Id == menuId, m => m.Products);
-            var products = await repository.All<Product>(product => productIds.Contains(product.Id)).ToListAsync();
+            var menu = await repository.FirstOrDefaultAsync<Menu, ICollection<Product>>(m => m.Id == menuId, m => m.Products);
+            var products = await repository
+                .All<Product>(product => productIds.Contains(product.Id))
+                .Where(p => !p.IsDeleted)
+                .ToListAsync();
 
             menu.Products.Clear();
             menu.Products = products;

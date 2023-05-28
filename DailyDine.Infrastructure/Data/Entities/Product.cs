@@ -42,9 +42,12 @@ namespace DailyDine.Infrastructure.Data.Entities
 
         public byte[] ProductImage { get; set; } = Array.Empty<byte>();
 
+        [Required]
+        public bool IsDeleted { get; set; } = false;
+
 
         public ICollection<Menu> Menus { get; set; } = new List<Menu>();
-        public ICollection<LunchSubscription> LunchSubscriptions { get; set; } = new List<LunchSubscription>();
+        public ICollection<Orders> Orders { get; set; } = new List<Orders>();
         public ApplicationUser CreatedBy { get; set; } = new ApplicationUser();
         public ApplicationUser EditedBy { get; set; } = new ApplicationUser();
         public Category Category { get; set; } = new Category();

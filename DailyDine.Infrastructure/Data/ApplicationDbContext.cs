@@ -49,7 +49,7 @@ namespace DailyDine.Infrastructure.Data
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<LunchSubscription> LunchSubscription { get; set; }
+        public DbSet<Orders> Orders { get; set; }
         public DbSet<Menu> Menu { get; set; }
         public DbSet<MenuSaved> MenuSaved { get; set; }
     }

@@ -12,5 +12,8 @@ namespace DailyDine.Infrastructure.Data.Entities
         public string Name { get; set; } = null!;
 
         public ICollection<Product> Products { get; set; } = new List<Product>();
+
+        [Required]
+        public bool IsDeleted { get; set; } = false;
     }
 }
